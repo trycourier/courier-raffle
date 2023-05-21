@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { CourierClient } from '@trycourier/courier'
-import { createHash } from 'node:crypto'
+import { createHash } from 'crypto'
 
 const courier = CourierClient({ authorizationToken: process.env.courier_auth_token })
 
