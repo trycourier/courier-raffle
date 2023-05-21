@@ -3,10 +3,10 @@ import Inbox from './inbox'
 import crypto from 'crypto'
 
 async function getUserSignature() {
-  //console.log(2)
+  //console.log(process.env.COURIER_AUTH_TOKEN, process.env.NEXT_PUBLIC_COURIER_CLIENT_KEY)
   return crypto
     .createHmac("sha256", process.env.COURIER_AUTH_TOKEN)
-    .update(process.env.NEXT_PUBLIC_COURIER_CLIENT_KEY)
+    .update(process.env.NEXT_PUBLIC_COURIER_USER)
     .digest("hex")
 }
 export default async function Home() {

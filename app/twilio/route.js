@@ -26,7 +26,7 @@ export async function POST(request) {
   await courier.send({
     message: {
       to: {
-        user_id: 'Google_113993807170956863837'
+        user_id: process.env.NEXT_PUBLIC_COURIER_USER
       },
       content: {
         body: '{{ name }} has entered the raffle!',

@@ -8,7 +8,7 @@ export default async function AppInbox(props = {}) {
     return (
         <CourierProvider 
             userId={process.env.NEXT_PUBLIC_COURIER_USER} 
-            //userSignature={props.userSignature}
+            userSignature={props.userSignature}
             clientKey={process.env.NEXT_PUBLIC_COURIER_CLIENT_KEY}>
             <Inbox/>
             <Toast/>
