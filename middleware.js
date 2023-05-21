@@ -4,10 +4,7 @@ function decode(authHeader) {
   let decoded
   if (authHeader) {
     const [scheme, encoded] = authHeader.split(' ')
-    const buffer = Uint8Array.from(atob(encoded), (character) =>
-      character.charCodeAt(0)
-    )
-    decoded = new TextDecoder().decode(buffer).normalize()
+    decoded = Buffer.from(encoded, 'base64').toString()
   }
   return decoded
 }
