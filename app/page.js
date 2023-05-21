@@ -3,7 +3,7 @@ import Inbox from './inbox'
 import crypto from 'crypto'
 
 async function getUserSignature() {
-  console.log(2)
+  //console.log(2)
   return crypto
     .createHmac("sha256", process.env.COURIER_AUTH_TOKEN)
     .update(process.env.NEXT_PUBLIC_COURIER_CLIENT_KEY)
@@ -11,7 +11,7 @@ async function getUserSignature() {
 }
 export default async function Home() {
   const userSignature = await getUserSignature()
-  console.log("page", userSignature)
+  //console.log("page", userSignature)
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -107,7 +107,7 @@ export default async function Home() {
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            See what we've fixed and what we've shipped every week
+            See what we&apos;ve fixed and what we&apos;ve shipped every week
           </p>
         </a>
       </div>
