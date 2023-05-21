@@ -9,11 +9,10 @@ export async function POST(request) {
   const params = await request.formData()
   const phoneNumber = params.get('From')
   const name = params.get('Body')
-  console.log(phoneNumber, name)
-  // create a Profile for this user
+  // create a unique id for this user based on their phone number
   const recipientId = createHash('sha3-256').update(phoneNumber).digest('hex')
-  console.log(recipientId)
-  const bar = await courier.mergeProfile({
+  // create a Profile for this user
+  await courier.mergeProfile({
     recipientId, 
     profile: { 
       phone_number: phoneNumber, 
@@ -21,12 +20,10 @@ export async function POST(request) {
       name
     } 
   })
-  console.log(bar)
   // Add the user to our List
-  const foo = await courier.lists.subscribe(process.env.COURIER_LIST_ID, recipientId);
-  console.log(foo);
-  // Send an in-app notification to the app's Inbox
-  const baz = await courier.send({
+  await courier.lists.subscribe(process.env.COURIER_LIST_ID, recipientId);
+  // Send an in-app toast and Inbox notification to this website
+  await courier.send({
     message: {
       to: {
         user_id: 'Google_113993807170956863837'
@@ -43,8 +40,7 @@ export async function POST(request) {
       }
     }
   })
-  console.log(baz)
-  // return "OK" 
+  // return a 200 OK to Twilio
   const data = {status: "OK"}
  
   return NextResponse.json(data);

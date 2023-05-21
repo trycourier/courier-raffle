@@ -1,13 +1,23 @@
 import Image from 'next/image'
 import Inbox from './inbox'
+import crypto from 'crypto'
 
-export default function Home() {
+async function getUserSignature() {
+  console.log(2)
+  return crypto
+    .createHmac("sha256", process.env.COURIER_AUTH_TOKEN)
+    .update(process.env.NEXT_PUBLIC_COURIER_CLIENT_KEY)
+    .digest("hex")
+}
+export default async function Home() {
+  const userSignature = await getUserSignature()
+  console.log("page", userSignature)
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        &nbsp;
+        <div><a href="/raffle">View Raffle Entries</a></div>
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <Inbox/>
+          <Inbox userSignature={userSignature}/>
         </div>
       </div>
 

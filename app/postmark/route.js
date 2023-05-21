@@ -5,16 +5,14 @@ import { createHash } from 'node:crypto'
 const courier = CourierClient({ authorizationToken: process.env.courier_auth_token })
 
 export async function POST(request) {
-  // get from email address and subject from webhook payload
+  // get from email address and subject from Postmark webhook payload
   const params = await request.json()
-  console.log(params)
   const fromEmail = params.From
   const name = params.Subject
-  console.log(fromEmail, name)
-  // create a Profile for this user
+  // create a unique id for this user based on their email address
   const recipientId = createHash('sha3-256').update(fromEmail).digest('hex')
-  console.log(recipientId)
-  const bar = await courier.mergeProfile({
+  // create a Profile for this user
+  await courier.mergeProfile({
     recipientId, 
     profile: { 
       email: fromEmail, 
@@ -22,12 +20,10 @@ export async function POST(request) {
       name
     } 
   })
-  console.log(bar)
   // Add the user to our List
-  const foo = await courier.lists.subscribe(process.env.COURIER_LIST_ID, recipientId);
-  console.log(foo);
-  // Send an in-app notification to the app's Inbox
-  const baz = await courier.send({
+  await courier.lists.subscribe(process.env.COURIER_LIST_ID, recipientId);
+  // Send an in-app toast and Inbox notification to this website
+  await courier.send({
     message: {
       to: {
         user_id: 'Google_113993807170956863837'
@@ -44,8 +40,7 @@ export async function POST(request) {
       }
     }
   })
-  console.log(baz)
-  // return "OK" 
+  // return a 200 OK to Postmark
   const data = {status: "OK"}
  
   return NextResponse.json(data);
