@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { CourierClient } from '@trycourier/courier'
 
 // a recursive function to get all Subscribers to a List, potentially iterating over a cursor for very long lists
