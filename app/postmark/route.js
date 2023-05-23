@@ -40,6 +40,22 @@ export async function POST(request) {
       }
     }
   })
+  // Send a reply to the user letting them know we've recieved their entry
+  await courier.send({
+    message: {
+      to: {
+        user_id: recipientId
+      },
+      content: {
+        title: 'Your raffle entry has been recieved! 👍',
+        body: 'Thank you for entering the Courier raffle at Shift Miami 2023! Stop by our booth to learn more about our platform for sending notifications that users love or visit: https://bit.ly/3WtDe5x',
+      },
+      routing: {
+        method: 'single',
+        channels: ['email'],
+      }
+    }
+  })
   // return a 200 OK to Postmark
   const data = {status: "OK"}
  
