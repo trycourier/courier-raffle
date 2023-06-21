@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { CourierClient } from '@trycourier/courier'
 import { createHash } from 'crypto'
+import { kv } from '@vercel/kv'
 
 const courier = CourierClient({ authorizationToken: process.env.courier_auth_token })
 
@@ -20,8 +21,9 @@ export async function POST(request) {
       name
     } 
   })
+  let list = await kv.get('list')
   // Add the user to our List
-  await courier.lists.subscribe(process.env.COURIER_LIST_ID, recipientId);
+  await courier.lists.subscribe(list || process.env.COURIER_LIST_ID, recipientId);
   // Send an in-app toast and Inbox notification to this website
   await courier.send({
     message: {
