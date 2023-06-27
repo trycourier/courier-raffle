@@ -1,10 +1,12 @@
 export const dynamic = 'force-dynamic'
 
+import { kv } from '@vercel/kv'
 import { CourierClient } from '@trycourier/courier'
 
 // a recursive function to get all Subscribers to a List, potentially iterating over a cursor for very long lists
 async function getSubscribers(client, cursor) {
-  const response = await client.lists.getSubscriptions(process.env.COURIER_LIST_ID, { cursor });
+  let list = await kv.get('list')
+  const response = await client.lists.getSubscriptions(list || process.env.COURIER_LIST_ID, { cursor });
   if (response.more) {
     return response.items.concat(getSubscribers(client, response.cursor))
   }
